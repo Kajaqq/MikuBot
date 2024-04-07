@@ -72,7 +72,7 @@ def load_txt_cache(file):
     return read_sites
 
 def save_txt_cache(file, urls):
-    with open(file,"at") as fp:
+    with open(file,"a") as fp:
         for line in urls:
             fp.write(line)
             fp.write('\n')
@@ -139,7 +139,7 @@ def get_data(browser, names):
 def main():
     # main variables
     chromedriver_path =  "/usr/bin/chromedriver"
-    output_csv_path = "/media/csv/output.csv"
+    output_csv_path = "media/csv/output.csv"
     KEYWORDS = ['初音ミク　どでか','初音ミク メガジャンボ寝そべりぬいぐるみ', '初音ミク 特大寝そべりぬいぐるみ'] # Search keywords
     NAMES = ['ミク　どでか','ミク寝そべり','初音ミク','ミクプライズ'] # Any of the words MUST be in the title 
     for key in KEYWORDS:
@@ -147,7 +147,7 @@ def main():
         browser = browser_setup(chromedriver_path)
         print(f"DEBUG: getting {key} urls")
         get_url(key , browser)
-        a = get_data(browser, names)
+        a = get_data(browser, NAMES)
         print(f"DEBUG: Saving to csv")
         pd.set_option('display.max_colwidth', 5000)
         df = pd.DataFrame(item_ls)
@@ -155,7 +155,4 @@ def main():
 
 
 if __name__ == '__main__':
-    while 1:
         main()
-        print("Sleeping for 5 minutes until refresh")
-        time.sleep(300)
