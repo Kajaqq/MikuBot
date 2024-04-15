@@ -1,6 +1,6 @@
 import asyncio
 import logging
-import os
+from pathlib import Path
 
 from mercapi import Mercapi
 from mercapi.requests import SearchRequestData
@@ -16,12 +16,14 @@ txt_cache_path = "log/cache.txt"
 
 
 def load_txt_cache(file):
-    isExist = os.path.exists(file)
+    log_file = Path(file)
+    isExist = log_file.is_file()
     if isExist:
         with open(file, newline='') as f:
             read_items = set([line.rstrip() for line in f])
         return read_items
     else:
+        log_file.parent.mkdir(exist_ok=True, parents=True)
         return []
 
 
