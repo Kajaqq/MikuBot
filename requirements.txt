@@ -1,3 +1,2 @@
-streamlit
-pandas
-selenium
+discord-webhook
+mercapi
