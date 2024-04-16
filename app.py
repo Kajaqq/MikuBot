@@ -51,12 +51,12 @@ async def parse_results(results):
         new_ids = set()
         print(f'Got {result.meta.num_found} items for keyword {keywords[idx]}')
         for item in result.items:
-            if item.id_ not in cache and item.status != "ITEM_STATUS_SOLD_OUT":
+            if item.id_ not in cache:
                 new_ids.add(item.id_)
                 await parse_item(item)
                 # print(f'adding {item.id_} to {new_ids}')
-            else:
-                print(f'ID {item.id_} already exists, skipping')
+            # elif item.id_ in cache:
+            #         print(f'ID {item.id_} already exists, skipping')
         print(f'Got {len(new_ids)} new results for keyword {keywords[idx]}')
         save_txt_cache(txt_cache_path, new_ids, cache)
 
