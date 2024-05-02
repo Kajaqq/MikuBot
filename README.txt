@@ -4,8 +4,8 @@ Now with partial async support!
 
 How to use:
 1. pip install -r requirements.txt
-2. Fill in the webhook url in webhook.py
-3. python app.py
+2. Fill in the discord webhook URL for sending new Mikus in .env
+3. python app.py 
 
 By default it searches for:
 - Dodeka Miku 

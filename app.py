@@ -1,17 +1,31 @@
 import asyncio
 import logging
+import os
+import sys
 from pathlib import Path
 
 from mercapi import Mercapi
 from mercapi.requests import SearchRequestData
+from dotenv import load_dotenv
 
 from webhook import send_message
+
+
+try:  
+    load_dotenv() # Try loading webhook from .env file if exists
+    webhook = os.environ["MIKU_WEBHOOK"]
+except KeyError: 
+    sys.exit("No Webhook URL found in .env or MIKU_WEBHOOK variable")
+except:
+    sys.exit("Something happened") # Windows 10 Setup reference, when something definitely happened, but we don't know what
+    
 
 logging.basicConfig()
 logging.getLogger().setLevel(logging.DEBUG)
 keywords = ['初音ミク　どでか', '初音ミク メガジャンボ寝そべりぬいぐるみ',
             '初音ミク 特大寝そべりぬいぐるみ']  # Search keywords
-names = ['ミク　どでか', 'ミク寝そべり', '初音ミク', 'ミクプライズ']  # Any of the words MUST be in the title
+names = ['ミク　どでか', 'ミク寝そべり', '初音ミク', 'ミクプライズ']  # Any of the words MUST be in the title, 
+                                                                  # avoids false positives as mercari searches in description too by default
 txt_cache_path = "log/cache.txt"
 
 
@@ -69,8 +83,9 @@ async def parse_item(item):
             'Name': item.name,
             'Price': item.price,
         }
-        send_message(data)
+        send_message(data, webhook)
 
 
 if __name__ == '__main__':
     asyncio.run(main())
+    del os.environ["MIKU_WEBHOOK"]

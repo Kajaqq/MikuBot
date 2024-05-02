@@ -26,6 +26,7 @@ share/python-wheels/
 *.egg
 MANIFEST
 
+
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
@@ -35,6 +36,7 @@ MANIFEST
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
+cache.txt
 
 # Unit test / coverage reports
 htmlcov/
@@ -120,7 +122,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+.env_prod
 .venv
 env/
 venv/

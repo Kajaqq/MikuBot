@@ -1,10 +1,7 @@
 from discord_webhook import DiscordWebhook, DiscordEmbed
 
-WEBHOOK_URL = ''
-
-
-def send_message(item):
-    webhook = DiscordWebhook(url=WEBHOOK_URL, username="MikuBot")
+def send_message(item, webhook):
+    webhook = DiscordWebhook(url=webhook, username="MikuBot")
     embed = create_embed(item)
     webhook.content = "New item found on Mercari!"
     webhook.add_embed(embed)
