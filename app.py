@@ -2,23 +2,14 @@ import asyncio
 import logging
 import os
 import sys
+
 from pathlib import Path
+from dotenv import load_dotenv
 
 from mercapi import Mercapi
 from mercapi.requests import SearchRequestData
-from dotenv import load_dotenv
 
 from webhook import send_message
-
-
-try:  
-    load_dotenv() # Try loading webhook from .env file if exists
-    webhook = os.environ["MIKU_WEBHOOK"]
-except KeyError: 
-    sys.exit("No Webhook URL found in .env or MIKU_WEBHOOK variable")
-except:
-    sys.exit("Something happened") # Windows 10 Setup reference, when something definitely happened, but we don't know what
-    
 
 logging.basicConfig()
 logging.getLogger().setLevel(logging.DEBUG)
@@ -27,6 +18,23 @@ keywords = ['初音ミク　どでか', '初音ミク メガジャンボ寝そ�
 names = ['ミク　どでか', 'ミク寝そべり', '初音ミク', 'ミクプライズ']  # Any of the words MUST be in the title, 
                                                                   # avoids false positives as mercari searches in description too by default
 txt_cache_path = "log/cache.txt"
+WEBHOOK_SCHEMA = 'https://discord.com/api/webhooks/'
+
+# Webhook reading procedure
+try:  
+    load_dotenv() # Try loading webhook from .env file if exists, 
+                  # not used for Docker as it's should be provided externally
+    webhook = os.environ["MIKU_WEBHOOK"]
+    if webhook.startswith(WEBHOOK_SCHEMA):
+        pass
+    elif not webhook:
+        raise KeyError
+    else:
+        raise ValueError
+except KeyError: 
+    sys.exit("No Webhook URL found in .env or MIKU_WEBHOOK variable")
+except ValueError:
+    sys.exit("The URL provided is not a valid discord webhook")
 
 
 def load_txt_cache(file):
