@@ -15,7 +15,7 @@ logging.basicConfig()
 logging.getLogger().setLevel(logging.DEBUG)
 keywords = ['初音ミク　どでか', '初音ミク メガジャンボ寝そべりぬいぐるみ',
             '初音ミク 特大寝そべりぬいぐるみ']  # Search keywords
-names = ['ミク　どでか', 'ミク寝そべり', '初音ミク', 'ミクプライズ']  # Any of the words MUST be in the title, 
+names = ['どでか', '寝そべり', '初音ミク', 'ミクプライズ']   # Any of the words MUST be in the title, 
                                                                   # avoids false positives as mercari searches in description too by default
 txt_cache_path = "log/cache.txt"
 WEBHOOK_SCHEMA = 'https://discord.com/api/webhooks/'
