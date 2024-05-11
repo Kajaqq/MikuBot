@@ -2,6 +2,7 @@ import asyncio
 import logging
 import os
 import sys
+import ast 
 
 from pathlib import Path
 from dotenv import load_dotenv
@@ -13,17 +14,16 @@ from webhook import send_message
 
 logging.basicConfig()
 logging.getLogger().setLevel(logging.DEBUG)
-keywords = ['初音ミク　どでか', '初音ミク メガジャンボ寝そべりぬいぐるみ',
-            '初音ミク 特大寝そべりぬいぐるみ']  # Search keywords
-names = ['どでか', '寝そべり', '初音ミク', 'ミクプライズ']   # Any of the words MUST be in the title, 
-                                                                  # avoids false positives as mercari searches in description too by default
+load_dotenv()
+keywords = ast.literal_eval(os.environ["MIKU_KEYWORDS"]) # Search keywords
+names =  ast.literal_eval(os.environ["MIKU_NAMES"])
 txt_cache_path = "log/cache.txt"
 WEBHOOK_SCHEMA = 'https://discord.com/api/webhooks/'
 
-# Webhook reading procedure
-try:  
-    load_dotenv() # Try loading webhook from .env file if exists, 
-                  # not used for Docker as it's should be provided externally
+
+try:              # Webhook reading procedure
+                  # Try loading webhook from .env file if exists, 
+                  # not used for Docker as it's should be provided via compose file.
     webhook = os.environ["MIKU_WEBHOOK"]
     if webhook.startswith(WEBHOOK_SCHEMA):
         pass
@@ -91,9 +91,10 @@ async def parse_item(item):
             'Name': item.name,
             'Price': item.price,
         }
+        print("Data created")
         send_message(data, webhook)
 
 
 if __name__ == '__main__':
     asyncio.run(main())
-    del os.environ["MIKU_WEBHOOK"]
+    os.unsetenv("MIKU_WEBHOOK")
