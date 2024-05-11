@@ -94,7 +94,6 @@ async def parse_item(item):
             'Name': item.name,
             'Price': item.price,
         }
-        print("Data created")
         send_message(data, webhook)
 
 
