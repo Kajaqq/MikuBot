@@ -5,5 +5,5 @@ services:
     volumes:
       - ./mikubot/:/app
     env_file: .env
-    restart: never 
+
 
