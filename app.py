@@ -84,7 +84,10 @@ async def parse_results(results):
 
 
 async def parse_item(item):
-    title_check = [name for name in names if (name in item.name)]
+    if names:
+        title_check = [name for name in names if (name in item.name)]
+    elif not names:
+        title_check=True
     if title_check:
         data = {
             'ID': item.id_,
