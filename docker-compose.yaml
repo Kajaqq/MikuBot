@@ -1,0 +1,10 @@
+services:
+  mikubot:
+    image: mikubot
+    working_dir: /app
+    volumes:
+      - ./mikubot/:/app
+    environment:
+      - MIKU_WEBHOOK: https://discord.com/api/webhooks/3939/MyDodekaWebhookID
+    restart: never 
+

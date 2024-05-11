@@ -3,5 +3,4 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY . . 
-ENV MIKU_WEBHOOK=
 ENTRYPOINT ["python","./app.py"]
