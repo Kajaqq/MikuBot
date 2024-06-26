@@ -14,9 +14,13 @@ from webhook import send_message
 
 logging.basicConfig()
 logging.getLogger().setLevel(logging.DEBUG)
-load_dotenv()
-keywords = ast.literal_eval(os.environ["MIKU_KEYWORDS"]) # Search keywords
-names =  ast.literal_eval(os.environ["MIKU_NAMES"])
+load_dotenv(override=True)
+keywords = ast.literal_eval(os.getenv("MIKU_KEYWORDS",[])) # Search keywords
+names =  ast.literal_eval(os.getenv("MIKU_NAMES",[]))
+negative_names =  ast.literal_eval(os.getenv("LUKA_NAMES",[]))
+min_price = ast.literal_eval(os.getenv("MIKU_MIN_PRICE",[]))
+max_price = ast.literal_eval(os.getenv("MIKU_MAX_PRICE",[]))
+
 txt_cache_path = "log/cache.txt"
 WEBHOOK_SCHEMA = 'https://discord.com/api/webhooks/'
 
@@ -63,7 +67,7 @@ async def main():
     results = []
     async with asyncio.TaskGroup() as tg:
         for keyword in keywords:
-            results.append(await tg.create_task(m.search(keyword, status=[SearchRequestData.Status.STATUS_ON_SALE])))
+            results.append(await tg.create_task(m.search(keyword, price_min=min_price, price_max=max_price, status=[SearchRequestData.Status.STATUS_ON_SALE])))
     await parse_results(results)
 
 
@@ -76,7 +80,7 @@ async def parse_results(results):
             if item.id_ not in cache:
                 new_ids.add(item.id_)
                 await parse_item(item)
-                # print(f'adding {item.id_} to {new_ids}')
+                #print(f'adding {item.id_} to {new_ids}')
             # elif item.id_ in cache:
             #         print(f'ID {item.id_} already exists, skipping')
         print(f'Got {len(new_ids)} new results for keyword {keywords[idx]}')
@@ -85,7 +89,11 @@ async def parse_results(results):
 
 async def parse_item(item):
     if names:
-        title_check = [name for name in names if (name in item.name)]
+        negative_title_check = [name for name in negative_names if (name not in item.name)]
+        if negative_title_check:
+            title_check = [name for name in names if (name in item.name)]
+        else:
+            title_check = False
     elif not names:
         title_check=True
     if title_check:
