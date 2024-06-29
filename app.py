@@ -15,11 +15,11 @@ from webhook import send_message
 logging.basicConfig()
 logging.getLogger().setLevel(logging.DEBUG)
 load_dotenv(override=True)
-keywords = ast.literal_eval(os.getenv("MIKU_KEYWORDS",[])) # Search keywords
-names =  ast.literal_eval(os.getenv("MIKU_NAMES",[]))
-negative_names =  ast.literal_eval(os.getenv("LUKA_NAMES",[]))
-min_price = ast.literal_eval(os.getenv("MIKU_MIN_PRICE",[]))
-max_price = ast.literal_eval(os.getenv("MIKU_MAX_PRICE",[]))
+keywords = ast.literal_eval(os.getenv("MIKU_KEYWORDS",'[]')) # Search keywords
+names =  ast.literal_eval(os.getenv("MIKU_NAMES",'[]'))
+negative_names =  ast.literal_eval(os.getenv("LUKA_NAMES",'[]'))
+min_price = ast.literal_eval(os.getenv("MIKU_MIN_PRICE",'[]'))
+max_price = ast.literal_eval(os.getenv("MIKU_MAX_PRICE",'[]'))
 
 txt_cache_path = "log/cache.txt"
 WEBHOOK_SCHEMA = 'https://discord.com/api/webhooks/'
@@ -90,7 +90,7 @@ async def parse_results(results):
 async def parse_item(item):
     if names:
         negative_title_check = [name for name in negative_names if (name not in item.name)]
-        if negative_title_check:
+        if not negative_title_check:
             title_check = [name for name in names if (name in item.name)]
         else:
             title_check = False
