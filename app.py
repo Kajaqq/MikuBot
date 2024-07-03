@@ -24,10 +24,8 @@ max_price = ast.literal_eval(os.getenv("MIKU_MAX_PRICE",'[]'))
 txt_cache_path = "log/cache.txt"
 WEBHOOK_SCHEMA = 'https://discord.com/api/webhooks/'
 
-
-try:              # Webhook reading procedure
-                  # Try loading webhook from .env file if exists, 
-                  # not used for Docker as it's should be provided via compose file.
+# Webhook reading procedure
+try:              
     webhook = os.environ["MIKU_WEBHOOK"]
     if webhook.startswith(WEBHOOK_SCHEMA):
         pass
