@@ -89,7 +89,7 @@ async def parse_results(results):
 
 async def parse_item(item):
     if names:
-        negative_title_check = [name for name in negative_names if (name not in item.name)]
+        negative_title_check = [name for name in negative_names if (name in item.name)]
         if not negative_title_check:
             title_check = [name for name in names if (name in item.name)]
         else:
