@@ -6,6 +6,7 @@ __pycache__
 env
 pip-log.txt
 pip-delete-this-directory.txt
+docker-compose.yaml
 .tox
 .coverage
 .coverage.*
@@ -20,5 +21,5 @@ coverage.xml
 .hypothesis
 .venv
 .env_prod
-.env 
+.env
 log

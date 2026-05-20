@@ -1,0 +1,14 @@
+[project]
+name = "MikuBot"
+version = "1.0.0"
+requires-python = ">=3.14"
+dependencies = [
+    "aiohttp>=3.13.5",
+    "discord-py>=2.7.1",
+    "mercapi",
+    "python-dotenv",
+    "uvloop"
+]
+
+[tool.uv]
+package = false

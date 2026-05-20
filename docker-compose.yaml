@@ -1,9 +1,7 @@
 services:
-  mikubot:
-    image: mikubot
-    working_dir: /app
-    volumes:
-      - ./mikubot/:/app
-    env_file: .env
-
-
+    mikubot:
+        image: mikubot
+        working_dir: /app
+        volumes:
+            - ./mikubot_cache/:/app/log
+        env_file: .env

@@ -1,21 +1,28 @@
-from discord_webhook import DiscordWebhook, DiscordEmbed
+import aiohttp
+import discord
 
-def send_message(item, webhook):
-    webhook = DiscordWebhook(url=webhook, rate_limit_retry=True)
-    embed = create_embed(item)
-    webhook.content = "New item found on Mercari!"
-    webhook.add_embed(embed)
-    response = webhook.execute()
+
+async def send_message(item, webhook):
+    async with aiohttp.ClientSession() as session:
+        discord_webhook = discord.Webhook.from_url(webhook, session=session)
+        await discord_webhook.send(
+            content="New item found on Mercari!",
+            embeds=[create_embed(item)],
+        )
 
 
 def create_embed(item):
-    listing_id = item['ID']
-    name = item['Name']
-    price = str(item['Price']) + '¥'
-    url = f'https://jp.mercari.com/item/{listing_id}'
-    image_url = f'https://static.mercdn.net/item/detail/orig/photos/{listing_id}_1.jpg'
-    embed = DiscordEmbed(title=name, color="03b2f8", url=url)
-    embed.set_timestamp()
-    embed.add_embed_field(name="Price", value=price, inline=False)
+    listing_id = item["ID"]
+    name = item["Name"]
+    price = str(item["Price"]) + "¥"
+    url = f"https://jp.mercari.com/item/{listing_id}"
+    image_url = f"https://static.mercdn.net/item/detail/orig/photos/{listing_id}_1.jpg"
+    embed = discord.Embed(
+        title=name,
+        color=0x03B2F8,
+        url=url,
+        timestamp=discord.utils.utcnow(),
+    )
+    embed.add_field(name="Price", value=price, inline=False)
     embed.set_image(url=image_url)
     return embed
